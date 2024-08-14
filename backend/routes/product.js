@@ -1,9 +1,11 @@
-const {fetchProducts,
+const {
     storeProduct,
     updateProduct,
     deleteProduct,
-    deleteAllProducts}=require("../controller/product")
+    fetchProducts,
+    }=require("../controller/product")
 const express = require("express");
+const { isSeller, checkAuthentication } = require("../middelware/ticket");
 
 
 
@@ -11,10 +13,9 @@ const express = require("express");
 
 const router = express.Router();
 router.get("",fetchProducts)
-// router.post("",checkAuthentication,isSeller,storeProduct)
-router.post("",storeProduct)
-// router.put("/:_id",checkAuthentication,updateProduct)
-router.delete("/:_id",deleteProduct)
-router.delete("",deleteAllProducts)
+router.post("",checkAuthentication,isSeller,storeProduct)
+router.put("/:_id",checkAuthentication,isSeller,updateProduct)
+router.delete("/:_id",checkAuthentication,isSeller,deleteProduct)
+
 
 module.exports = router;

@@ -1,7 +1,8 @@
-const { signup, login, logout, getAllUsers,  } = require("../controller/user");
+const { signup, login, getAllUsers, getLoggedUser,  } = require("../controller/user");
 const express = require("express");
 const checkValidationSchmea = require("../middelware/checkValidationSchema");
 const Joi = require("joi");
+const { checkAuthentication } = require("../middelware/ticket");
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ const signupValidationSchema = Joi.object({
   
 router.post("/signup",checkValidationSchmea(signupValidationSchema),signup);
 router.post("/login", login);
-router.post("/logout", logout);
+router.get("/get-user",checkAuthentication, getLoggedUser);
 router.get("/getAllUsers", getAllUsers);
 
 module.exports = router;   

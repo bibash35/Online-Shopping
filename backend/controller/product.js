@@ -3,14 +3,15 @@ const path = require("path");
 const fs = require("fs");
 
 const fetchProducts = async (req, res) => {
-let product=await Product.find();
+
+  let product=await Product.find();
 res.send(product)
+
+ 
 }
 const storeProduct = async (req, res) => {
    
-    // let rootPath = path.resolve();
-    // let storagePath=path.join(rootPath,"uploads")
-    // req.files.image.mv(path.join(storagePath,req.files.image.name ));
+    
     try {
       let imagePath = null;
   
@@ -27,6 +28,7 @@ const storeProduct = async (req, res) => {
 let product=await Product.create({
     ...req.body,
     image: imagePath,
+
   });
 res.send(product)
 }catch(err){
@@ -34,22 +36,56 @@ res.send(product)
 
 }
 }
-const updateProduct = async (req, res) => {
-    try {
-      const productId = req.params._id; // Extract the product ID from request parameters
-      const updateData = req.body; // Data to update the product
-      const product = await Product.findById(productId);
 
-       if (!product) {
-        return res.status(404).send(`Product with ID ${productId} not found`);
-      } 
-      await Product.findByIdAndUpdate(productId, updateData);
-      res.send(`Product with ID ${productId} updated`); // Send a success message
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("Internal Server Error");
+
+const updateProduct = async (req, res) => {
+  try {
+    const { _id } = req.params;
+    const { name, category, price, description } = req.body;
+
+    const product = await Product.findById(_id);
+
+    if (!product) {
+      return res.status(404).send({ message: "Product not found" });
     }
+
+    let imagePath = product.image;
+
+    if (req.files?.image) {
+      // Delete the old image file if it exists
+      if (imagePath) {
+        const oldImagePath = path.resolve(`.${imagePath}`);
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      }
+
+      // Save the new image file
+      let rootPath = path.resolve();
+      let uniqueTimestamp = Date.now() + Math.floor(Math.random() * 1000);
+      imagePath = path
+        .join("/", "uploads", `${uniqueTimestamp}-${req.files.image.name}`)
+        .replaceAll("\\", "/");
+      req.files.image.mv(path.join(rootPath, imagePath));
+    }
+
+    // Update the product details only if the new values are provided and valid
+    if (name !== undefined) product.name = name;
+    if (category !== undefined) product.category = category;
+    if (price !== undefined && !isNaN(price)) product.price = Number(price);
+    if (description !== undefined) product.description = description;
+    product.image = imagePath;
+
+    // Save the updated product
+    await product.save();
+
+    res.send(product);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Failed to update product" });
   }
+};
+
   const deleteProduct = async (req, res, next) => {
     try {
       const productId = req.params._id;
@@ -72,44 +108,12 @@ const updateProduct = async (req, res) => {
       next(error);
     }
   };
-  const deleteAllProducts = async (req, res, next) => {
-    try {
-      // Fetch all products
-      const products = await Product.find({});
-  
-      // Loop through products to delete their associated images
-      products.forEach(async (product) => {
-        if (product.image) {
-          fs.unlink(path.join(path.resolve(), product.image), (err) => {
-            if (err) {
-              console.error(err);
-            }
-          });
-        }
-      });
-  
-      // Delete all products from the database
-      await Product.deleteMany({});
-  
-      res.send("All products deleted");
-    } catch (error) {
-      next(error);
-    }
-  };
-  
-  module.exports = {
-    fetchProducts,
-    storeProduct,
-    updateProduct,
-    deleteProduct,
-    deleteAllProducts
-  };
-  
-  
+
+
 module.exports = {
     fetchProducts,
     storeProduct,
     updateProduct,
     deleteProduct,
-    deleteAllProducts,
   };
+

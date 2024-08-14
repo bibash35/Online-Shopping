@@ -24,11 +24,11 @@ const UserSchema=new Schema({
         required:true,
         type:String,
     },
-    // role: {
-    //     type: String,
-    //     enum: [BUYER, SELLER],
-    //     required: true,
-    // },
+    role: {
+        type: String,
+        enum: [BUYER, SELLER],
+        required: true,
+    },
     image: {
       type: String,
     },
