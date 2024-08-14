@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FaShoppingBasket } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaRegUserCircle, FaShoppingCart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";

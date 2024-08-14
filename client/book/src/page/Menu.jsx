@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { addCartItem } from '../redux/slice/productSlice';
 import AllProduct from '../component/AllProduct';
+import { baseUrl } from '../Url';
 
 
 export default function Menu() {
@@ -26,8 +27,12 @@ export default function Menu() {
      <div className="p-2 md:p-4">
       <div className="w-full max-w-4xl m-auto md:flex bg-white">
         <div className="max-w-sm  overflow-hidden w-full p-5">
-          <img
+          {/* <img
             src={`http://localhost:7000${productDisplay?.image}`}
+            className="hover:scale-105 transition-all h-full"
+          /> */}
+          <img
+            src={`${baseUrl}${productDisplay?.image}`}
             className="hover:scale-105 transition-all h-full"
           />
         </div>

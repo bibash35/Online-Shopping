@@ -6,6 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDataProduct } from './redux/slice/productSlice';
 import { loginRedux } from './redux/slice/userSlice';
+import { baseUrl } from './Url';
 export default function App() {
   const [isLoading, setisLoading] = useState(true);
 
@@ -13,9 +14,8 @@ export default function App() {
   // const productData = useSelector((state)=>state.product)
 
   useEffect(() => {
-
-    axios.get("http://localhost:7000/api/products")
-    // axios.get("https://ecommerce-sagartmg2.vercel.app/api/products/trending")
+    // axios.get("http://localhost:7000/api/products")
+    axios.get(`${baseUrl}/api/products`)
     .then((res) => {
       // setProducts(res.data);
       dispatch(setDataProduct(res.data))
@@ -27,7 +27,8 @@ export default function App() {
     let storedUser = localStorage.getItem("user");
 
     if (storedUser) {
-      axios.get("http://localhost:7000/api/auth/getAllUsers")
+      // axios.get("http://localhost:7000/api/auth/getAllUsers")
+      axios.get(`${baseUrl}/api/auth/getAllUsers`)
         .then((res) => {
   dispatch(loginRedux(JSON.parse(storedUser)));
           setisLoading(false);

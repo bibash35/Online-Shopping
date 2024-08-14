@@ -12,8 +12,6 @@ export default function Newproduct() {
     description : ""
   })
   function handleChange(e) {
-    // console.log(e.target.name);
-    // console.log(e.target.name.value);
     if (e.target.name == "image") {
       setData({ ...data, image: e.target.files[0] });
     } else {
@@ -81,18 +79,7 @@ export default function Newproduct() {
       </select>
       
     
-     
-       {/* <label htmlFor='image'>Image
-        <div  className='h-40 w-full bg-slate-200  rounded flex items-center justify-center cursor-pointer'>
-            {
-              data.image ? <img src={data.image} className="h-full" /> :<span className='text-5xl'><BsCloudUpload/></span> 
-            }
-            
-            
-           <input type={"file"} accept="image/*" id="image"  onChange={handleChange} className="hidden"/>
-        </div>
-        </label> */}
-      
+    
        <label htmlFor="image">Image</label>
        <input type="file"
        name="image"

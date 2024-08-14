@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loginRedux } from "../redux/slice/userSlice"
 import { useDispatch } from "react-redux";
+import { baseUrl } from "../Url";
 export default function Login() {
   const navigate= useNavigate()
 
@@ -32,7 +33,7 @@ setData({...data,[e.target.name]:e.target.value})
   const [formError, setFormError] = useState({});
   const handleSubmit=(e)=>{
      e.preventDefault();
-     axios.post("http://localhost:7000/api/auth/login",data,)
+    axios.post(`${baseUrl}/api/auth/login`,data,)
      .then((res) => {
       //  toast.success("success");
        dispatch(loginRedux(res.data))

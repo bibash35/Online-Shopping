@@ -3,6 +3,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { TbPlus, TbMinus } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { deleteCartItem,increaseQty,decreaseQty } from "../redux/slice/productSlice";
+import { baseUrl } from '../Url';
 
 // export default function CartProduct() {
 export default function CartProduct({id, name, image, category, qty, total, price}) {
@@ -11,7 +12,8 @@ export default function CartProduct({id, name, image, category, qty, total, pric
 <>
 <div className="bg-slate-200 p-2 flex gap-4 rounded border border-slate-300">
       <div className="p-3 bg-white rounded overflow-hidden">
-        <img src={`http://localhost:7000${image}`} className="h-28 w-40 object-cover " />
+        {/* <img src={`http://localhost:7000${image}`} className="h-28 w-40 object-cover " /> */}
+        <img src={`${baseUrl}${image}`} className="h-28 w-40 object-cover " />
       </div>
       <div className="flex flex-col gap-1 w-full">
         <div className="flex justify-between">

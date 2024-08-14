@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-hot-toast";
+import { baseUrl } from "../Url";
 
 export default function Signup() {
   const navigate= useNavigate()
@@ -89,7 +90,8 @@ setData({...data,[e.target.name]:e.target.value})
      if (firstName && email && password && confirmPassword) {
        if (password === confirmPassword) {
      
-     axios.post("http://localhost:7000/api/auth/signup",data,)
+    //  axios.post("http://localhost:7000/api/auth/signup",data,)
+     axios.post(`${baseUrl}/api/auth/signup`,data,)
       .then((res) => {
         toast.success("success");
         setIsLoading(false);
@@ -195,7 +197,9 @@ setData({...data,[e.target.name]:e.target.value})
           <ErrorMessage msg={formError.confirmPassword} />
 
 
-          <button  type="submit" className="w-full max-w-[150px] m-auto  bg-red-500 hover:bg-red-600 cursor-pointer  text-white text-xl font-medium text-center py-1 rounded-full mt-4">
+          <button  type="submit" className="w-full max-w-[150px] m-auto 
+           bg-red-500 hover:bg-red-600 cursor-pointer  text-white text-xl 
+           font-medium text-center py-1 rounded-full mt-4">
           Signup
           </button>
         </form>
