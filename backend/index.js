@@ -13,7 +13,28 @@ dotenv.config();
 // Connect to the database
 ConnectToDb();
 
-app.use(cors());
+// app.use(cors({
+//   exposedHeaders:"X-TOTAL-COUNT",
+//   origin:true,
+//   credentials:true
+// }));
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');  // Allow all domains, or specify a specific one
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+//   next();
+// });
+
+const corsOptions = {
+  origin: 'http://localhost:5173', // Specify the frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
+  credentials: true, // Allow cookies if needed
+  exposedHeaders: ['X-TOTAL-COUNT'], // If you need to expose custom headers
+};
+
+app.use(cors(corsOptions));
+
 
 app.use(express.json()); 
 app.use(fileUpload());

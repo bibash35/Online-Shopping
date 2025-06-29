@@ -1,10 +1,9 @@
 import axios from "axios";
-
 import React, { useState } from "react";
 import loginSignupImage from "../assest/login-animation.gif";
 import ErrorMessage from "../component/ErrorMessage"
 import { BiShow, BiHide } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 import {toast} from "react-hot-toast"
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,7 +13,7 @@ export default function Login() {
   const navigate= useNavigate()
 
   const dispatch = useDispatch()
-
+  
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({
      
@@ -26,12 +25,47 @@ export default function Login() {
     setShowPassword((preve) => !preve);
   };
   
-  const handleOnChange = (e) => {
-setData({...data,[e.target.name]:e.target.value})
-  }
+
   const [formError, setFormError] = useState({});
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+
+    // Update data state
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    // Remove error for the field being changed
+    setFormError((prevErrors) => {
+      const updatedErrors = { ...prevErrors };
+      if (updatedErrors[name]) {
+        delete updatedErrors[name]; // Remove the error for the field
+      }
+      return updatedErrors;
+    });
+  };
+
   const handleSubmit=(e)=>{
      e.preventDefault();
+     let errors = {};
+     const { email, password } = data;
+   
+     if (!email) {
+       errors.email = "Email is required";  
+     }
+   
+     if (!password) {
+       errors.password = "Password is required";  
+     }
+   
+     // If there are validation errors, set them and return
+     if (Object.keys(errors).length > 0) {
+       setFormError(errors);
+       return;
+     }
+
     axios.post(`http://localhost:7000/api/auth/login`,data,)
      .then((res) => {
       //  toast.success("success");
@@ -88,7 +122,7 @@ setData({...data,[e.target.name]:e.target.value})
           onChange={handleOnChange}
 
         />
-           <ErrorMessage msg={formError.email} />
+            {formError.email && <ErrorMessage msg={formError.email} />}
 
         <label htmlFor="password">Password</label>
         <div className="flex px-2 py-1 bg-slate-200 rounded mt-1 mb-2 focus-within:outline focus-within:outline-blue-300">
@@ -107,6 +141,9 @@ setData({...data,[e.target.name]:e.target.value})
             {showPassword ? <BiShow /> : <BiHide />}
           </span>
         </div>
+
+        {formError.password && <ErrorMessage msg={formError.password} />}
+
 
         <button className="w-full max-w-[150px] m-auto  bg-red-500 hover:bg-red-600 cursor-pointer  text-white text-xl font-medium text-center py-1 rounded-full mt-4">
           Login

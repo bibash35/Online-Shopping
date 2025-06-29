@@ -17,19 +17,26 @@ export const productSlice = createSlice({
       state.productList = [...action.payload];
       state.filteredProducts = [...action.payload]; // initially, all products are shown
     },
+    
     addCartItem: (state, action) => {
-      const check = state.cartItem.some((el) => el._id === action.payload._id);
-      if (check) {
-        toast.error("Already Item in Cart");
+      // Check if the product already exists in the cart
+      const existingItem = state.cartItem.find((el) => el._id === action.payload._id);
+    
+      if (existingItem) {
+        // If it exists, increase the quantity and update the total price
+        existingItem.qty += 1;
+        existingItem.total = existingItem.qty * existingItem.price;
       } else {
-        toast.success("Item Add successfully");
+        // If it doesn't exist, add it as a new product with quantity 1
+        toast.success("Item added to Cart");
         const total = action.payload.price;
         state.cartItem = [
           ...state.cartItem,
-          { ...action.payload, qty: 1, total: total },
+          { ...action.payload, qty: 1, total: total }
         ];
       }
     },
+
     deleteCartItem: (state, action) => {
       toast("one Item Delete");
       const index = state.cartItem.findIndex((el) => el._id === action.payload);
@@ -65,7 +72,10 @@ export const productSlice = createSlice({
     },
   },
 });
-
+export const selectCartItemCount = (state) => {
+  // Return the total number of items in the cart (taking qty into account)
+  return state.product.cartItem.reduce((acc, item) => acc + item.qty, 0);
+};
 export const {
   setDataProduct,
   addCartItem,

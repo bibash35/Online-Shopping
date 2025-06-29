@@ -5,11 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slice/userSlice";
 import { toast } from "react-hot-toast";
 import { setSearchTerm } from '../redux/slice/productSlice';
+import { selectCartItemCount } from "../redux/slice/productSlice"; // Import the selector
+
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross1 } from "react-icons/rx";
 
 export default function Header() {
   let user = useSelector((store) => store.user.value);
+  const cartItemCount = useSelector(selectCartItemCount);
 
   const dispatch = useDispatch()
   const navigate = useNavigate();
@@ -119,7 +122,9 @@ export default function Header() {
             <Link to={"cart"}>
               <FaShoppingCart />
               <div className="absolute -top-1 -right-1 text-white bg-red-500 h-4 w-4 rounded-full text-sm text-center">
-                {cartItemNumber.length}
+                {/* {cartItemNumber.length} */}
+                {cartItemCount} {/* Display cart item count here */}
+
               </div>
             </Link>
           </div>
