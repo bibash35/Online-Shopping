@@ -66,7 +66,8 @@ export default function Login() {
        return;
      }
 
-    axios.post(`http://localhost:7000/api/auth/login`,data,)
+    // axios.post(`http://localhost:7000/api/auth/login`,data,)
+    axios.post(`https://online-shopping-backend-fg1s.onrender.com/api/auth/login`,data,)
      .then((res) => {
       //  toast.success("success");
        dispatch(loginRedux(res.data))
