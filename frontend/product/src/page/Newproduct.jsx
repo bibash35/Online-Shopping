@@ -6,7 +6,7 @@ const NewProduct = () => {
   const [data, setData] = useState({
     name: '',
     category: '',
-    image: '',
+    image:'',
     price: '',
     description: ''
   });
@@ -134,7 +134,7 @@ const NewProduct = () => {
           <option value='sandwich'>Sandwich</option>
         </select>
 
-        <label htmlFor='image'>Image</label>
+        <label htmlFor='image'>image</label>
         <input
           type='file'
           name='image'

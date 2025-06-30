@@ -2,6 +2,9 @@ import React from 'react'
 import { Link } from "react-router-dom";
 
 export default function HomeCard({ name, image, category, price,loading,id }) {
+  const imageUrl = image
+    ? (image.startsWith('http') ? image : `http://localhost:7000${image}`)
+    : '/path/to/default/image';
   return (
     <>
     <div className='bg-white rounded shadow-md p-2 min-w-[150px]'>
@@ -10,7 +13,9 @@ export default function HomeCard({ name, image, category, price,loading,id }) {
         <>
         <Link to={`/menu/${id}`} onClick={()=>window.scrollTo({top:"0",behavior : "smooth"})} >
           <div className="w-40 min-h-[150px]">
-            <img src={`http://localhost:7000${image}`} className="h-full w-full" />
+            {/* <img src={`http://localhost:7000${image}`} className="h-full w-full" /> */}
+            <img src={imageUrl} alt={name} className="h-full w-full" />
+
           </div>
           <h3 className="font-semibold text-slate-600 text-center capitalize text-lg">
             {name}

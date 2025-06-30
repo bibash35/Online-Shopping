@@ -22,19 +22,24 @@ export default function Menu() {
     dispatch(addCartItem(productDisplay))
       navigate("/cart")
   }
+   const getImageUrl = (img) => {
+    return img?.startsWith("http") ? img : `http://localhost:7000${img}`;
+  }
   return (
     <>
      <div className="p-2 md:p-4">
       <div className="w-full max-w-4xl m-auto md:flex bg-white">
         <div className="max-w-sm  overflow-hidden w-full p-5">
-          <img
+          {/* <img
             src={`http://localhost:7000${productDisplay?.image}`}
             className="hover:scale-105 transition-all h-full"
-          />
-          {/* <img
-            src={`${baseUrl}${productDisplay?.image}`}
-            className="hover:scale-105 transition-all h-full"
           /> */}
+          <img
+            src={getImageUrl(productDisplay?.image)}
+            alt={productDisplay?.name}
+            className="hover:scale-105 transition-all h-full "
+          />
+          
         </div>
         <div className="flex flex-col gap-1">
           <h3 className="font-semibold text-slate-600  capitalize text-2xl md:text-4xl">

@@ -31,7 +31,8 @@ export default function Cart() {
                   key={el._id}
                   id={el._id}
                   name={el.name}
-                  image={el.image}
+  image={el.image}  // Use el.image here, NOT el.imageUrl
+
                   category={el.category}
                   qty={el.qty}
                   total={el.total}

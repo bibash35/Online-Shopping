@@ -1,50 +1,58 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
-const { ConnectToDb } = require("./db/Connection");
-const authRoutes = require("./routes/user");
-const productRoutes=require("./routes/product")
-const messageRoutes=require("./routes/message")
-const fileUpload = require("express-fileupload");
+const path = require("path");
 const cors = require("cors");
 
+const { ConnectToDb } = require("./db/Connection");
+
+// Load environment variables
 dotenv.config();
 
-// Connect to the database
+// Connect to MongoDB
 ConnectToDb();
 
-// app.use(cors({
-//   exposedHeaders:"X-TOTAL-COUNT",
-//   origin:true,
-//   credentials:true
-// }));
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');  // Allow all domains, or specify a specific one
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-//   next();
-// });
+// --- MIDDLEWARES --- //
 
-const corsOptions = {
-  origin: 'http://localhost:5173', // Specify the frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type'],
-  credentials: true, // Allow cookies if needed
-  exposedHeaders: ['X-TOTAL-COUNT'], // If you need to expose custom headers
-};
+// CORS (Allow frontend access)
+app.use(cors({
+  exposedHeaders: "X-TOTAL-COUNT",
+  origin: true,
+  credentials: true,
+}));
 
-app.use(cors(corsOptions));
+// CORS headers fallback
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
+// Log content-type of incoming requests (optional, for debugging)
+app.use((req, res, next) => {
+  console.log("Incoming Content-Type:", req.headers["content-type"]);
+  next();
+});
 
-app.use(express.json()); 
-app.use(fileUpload());
-
+// Static file serving
 app.use("/uploads", express.static("uploads"));
-app.use("/api/products", productRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api",messageRoutes );
 
-// Start the server
-app.listen(process.env.PORT, () => {
-  console.log(`Server started on port ${process.env.PORT}`);
-}); 
+// Only parse JSON **after** file uploads handled (Multer will parse multipart)
+app.use(express.json()); // Handles application/json
+app.use(express.urlencoded({ extended: true })); // Handles x-www-form-urlencoded
+
+// --- ROUTES --- //
+const authRoutes = require("./routes/user");
+const productRoutes = require("./routes/product");
+const messageRoutes = require("./routes/message");
+
+app.use("/api/products", productRoutes);     // File upload routes
+app.use("/api/auth", authRoutes);
+app.use("/api", messageRoutes);
+
+// --- START SERVER --- //
+const PORT = process.env.PORT || 7000;
+app.listen(PORT, () => {
+  console.log(`✅ Server started on port ${PORT}`);
+});

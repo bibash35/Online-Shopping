@@ -14,6 +14,7 @@ export default function App() {
 
   useEffect(() => {
     // axios.get(`${baseUrl}/api/products`)
+    // axios.get(`https://e-commerce-backend-exx9.onrender.com/api/products`)
     axios.get(`http://localhost:7000/api/products`)
     .then((res) => {
       dispatch(setDataProduct(res.data))
@@ -55,13 +56,13 @@ useEffect(() => {
   } else if (token) {
     // axios.get(`${baseUrl}/api/users/get-user`, {
     axios.get(`http://localhost:7000/api/auth/get-user`, {
+    // axios.get(`https://e-commerce-backend-exx9.onrender.com/api/auth/get-user`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
     .then((res) => {
       dispatch(loginRedux(res.data));
-      // localStorage.setItem("user", JSON.stringify(res.data)); 
       setisLoading(false);
     })
     .catch((err) => {

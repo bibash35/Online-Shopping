@@ -29,7 +29,7 @@ const UserSchema=new Schema({
         enum: [BUYER, SELLER],
         required: true,
     },
-    image: {
+    thumbnail: {
       type: String,
     },
 },
