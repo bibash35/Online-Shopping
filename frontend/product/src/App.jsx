@@ -14,8 +14,8 @@ export default function App() {
 
   useEffect(() => {
     // axios.get(`${baseUrl}/api/products`)
-    // axios.get(`https://e-commerce-backend-exx9.onrender.com/api/products`)
-    axios.get(`http://localhost:7000/api/products`)
+    axios.get(`https://online-shopping-backend-fg1s.onrender.com/api/products`)
+    // axios.get(`http://localhost:7000/api/products`)
     .then((res) => {
       dispatch(setDataProduct(res.data))
       
@@ -55,8 +55,8 @@ useEffect(() => {
     setisLoading(false);
   } else if (token) {
     // axios.get(`${baseUrl}/api/users/get-user`, {
-    axios.get(`http://localhost:7000/api/auth/get-user`, {
-    // axios.get(`https://e-commerce-backend-exx9.onrender.com/api/auth/get-user`, {
+    // axios.get(`http://localhost:7000/api/auth/get-user`, {
+    axios.get(`https://online-shopping-backend-fg1s.onrender.com/api/auth/get-user`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
