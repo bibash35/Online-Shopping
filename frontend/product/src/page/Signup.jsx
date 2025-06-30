@@ -95,7 +95,8 @@ if (password && confirmPassword && password !== confirmPassword){
 
   // If no errors, proceed with API call
   if (Object.keys(errors).length === 0) {
-    axios.post(`http://localhost:7000/api/auth/signup`, data)
+    // axios.post(`http://localhost:7000/api/auth/signup`, data)
+    axios.post(`https://online-shopping-backend-fg1s.onrender.com/api/auth/signup`, data)
       .then((res) => {
         toast.success("Signup successful");
         setIsLoading(false);
